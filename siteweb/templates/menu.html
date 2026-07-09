@@ -1,13 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="card w-100">
-    <div class="card-body">
 
-        <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
+
+
+<div class="row">
+
+    <!-- Tabela -->
+    <div class="col-lg-8">
+        <div class="card w-100">
+            <div class="card-body">
+
+         <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
+            <h4 class="card-title fw-semibold mb-0">Projetos</h4>
+
             <div>
-                <h4 class="card-title fw-semibold">Projetos</h4>
-                <p class="card-subtitle">Projetos cadastrados no sistema</p>
+                <select class="form-select" name="status" id="filtro-status">
+                    <option value="">Todos os status</option>
+                    {% for valor, label in status_choices %}
+                        <option value="{{ valor }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
             </div>
+
+            <button type="button" class="btn btn-primary btn-sm">
+                <i class="ti ti-plus"></i> Novo
+            </button>
         </div>
 
         <div class="table-responsive">
@@ -17,7 +34,6 @@
                     <tr class="text-muted fw-semibold">
                         <th>Título</th>
                         <th>Status</th>
-                        <th>Cadastro</th>                        
                     </tr>
                 </thead>
 
@@ -30,6 +46,11 @@
                         <td>
                             <h6 class="fw-semibold mb-0">
                                <a href="#"> {{ projeto.titulo }} </a>
+                                 <a href="#"
+                            class="btn btn-light btn-sm rounded-circle"
+                            title="Abrir projeto">
+                                <i class="ti ti-arrow-right"></i>
+                            </a>
                             </h6>
                         </td>
 
@@ -37,39 +58,37 @@
 
                             {% if projeto.status_projeto == "1" %}
                                 <span class="badge bg-warning-subtle text-warning">
-                                    {{ projeto.get_status_projeto_display }}
+                                <h6>        {{ projeto.get_status_projeto_display }}</h6>
                                 </span>
 
                             {% elif projeto.status_projeto == "2" %}
                                 <span class="badge bg-info-subtle text-info">
-                                    {{ projeto.get_status_projeto_display }}
+                                   <h6> {{ projeto.get_status_projeto_display }}</h6>
                                 </span>
 
                             {% elif projeto.status_projeto == "3" %}
                                 <span class="badge bg-primary-subtle text-primary">
-                                    {{ projeto.get_status_projeto_display }}
+                                  <h6> {{ projeto.get_status_projeto_display }}</h6>
                                 </span>
 
                             {% elif projeto.status_projeto == "4" %}
                                 <span class="badge bg-success-subtle text-success">
-                                    {{ projeto.get_status_projeto_display }}
+                                  <h6> {{ projeto.get_status_projeto_display }}</h6>
                                 </span>
 
                             {% elif projeto.status_projeto == "5" %}
                                 <span class="badge bg-danger-subtle text-danger">
-                                    {{ projeto.get_status_projeto_display }}
+                                  <h6>  {{ projeto.get_status_projeto_display }}</h6>
                                 </span>
+
 
                             {% else %}
                                 <span class="badge bg-secondary-subtle text-secondary">
                                     Não informado
                                 </span>
                             {% endif %}
+                          
 
-                        </td>
-
-                        <td>
-                            {{ projeto.data_cadastro|date:"d/m/Y" }}
                         </td>
 
                     </tr>
@@ -87,9 +106,140 @@
                 </tbody>
 
             </table>
+            <br />
+
+            <nav aria-label="...">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0)">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0)">3</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Lado direito -->
+    <div class="col-lg-4">
+
+        <!-- Resumo -->
+        <div class="card mb-4">
+            <div class="card-body">
+
+                <h5 class="card-title fw-semibold mb-4">
+                    Resumo dos Projetos
+                </h5>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Em negociação</span>
+                    <strong>{{ negociacao }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Aguardando iniciar</span>
+                    <strong>{{ aguardando }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Em execução</span>
+                    <strong>{{ execucao }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Concluídos</span>
+                    <strong>{{ concluido }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Bloqueados</span>
+                    <strong>{{ bloqueado }}</strong>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Pizza -->
+        <div class="card">
+            <div class="card-body">
+
+                <h5 class="card-title fw-semibold">
+                    Situação dos Projetos
+                </h5>
+
+                <div id="breakup"></div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card overflow-hidden">
+    <div class="card-body p-4">
+
+        <h5 class="card-title fw-semibold">
+            Situação das Tarefas
+        </h5>
+
+        <div class="row align-items-center">
+
+            <div class="col-6">
+
+                <h2 class="fw-bold">
+                    {{ projetos|length }}
+                </h2>
+
+                <p class="text-muted">
+                    Total de projetos
+                </p>
+
+                <div class="mt-4">
+
+                    <div class="mb-2">
+                        <span class="round-8 bg-warning rounded-circle me-2 d-inline-block"></span>
+                        Em negociação
+                    </div>
+
+                    <div class="mb-2">
+                        <span class="round-8 bg-info rounded-circle me-2 d-inline-block"></span>
+                        Aguardando iniciar
+                    </div>
+
+                    <div class="mb-2">
+                        <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
+                        Em execução
+                    </div>
+
+                    <div class="mb-2">
+                        <span class="round-8 bg-success rounded-circle me-2 d-inline-block"></span>
+                        Concluído
+                    </div>
+
+                    <div>
+                        <span class="round-8 bg-danger rounded-circle me-2 d-inline-block"></span>
+                        Bloqueado
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-6">
+                <div id="breakup"></div>
+            </div>
+
         </div>
 
     </div>
 </div>
-        
 {% endblock %}

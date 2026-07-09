@@ -6,15 +6,18 @@ from django.utils import timezone
 
 from datetime import datetime
 
-STATUS_PROJETO = [
+
+
+class Projeto(models.Model):
+
+    STATUS_PROJETO = [
     ('1', 'EM NEGOCIACAO'),
     ('2', 'AGUARDANDO INICIAR'),
     ('3', 'EM EXECUCAO'),
     ('4', 'CONCLUÍDO'),
     ('5', 'BLOQUEADO'),   
-]
-
-class Projeto(models.Model):
+    ]
+    
     id             = models.AutoField(primary_key=True)  # Adicione esta linha   
     data_cadastro  = models.DateTimeField(default=timezone.now)
     data_inicio    = models.DateTimeField(default=timezone.now)
@@ -24,20 +27,6 @@ class Projeto(models.Model):
     status_projeto = models.CharField(max_length=20,choices=STATUS_PROJETO,default='1',null=True)
   
     def save(self, *args, **kwargs):
-        for field in self._meta.concrete_fields:
-
-            if isinstance(field, models.CharField):
-                value = getattr(self, field.attname)
-                if value is not None:
-                    setattr(self, field.attname, str(value).upper())
-
-            if isinstance(field, models.DateTimeField):
-                value = getattr(self, field.attname)
-                if isinstance(value, int):
-                    raise ValueError(
-                        f"{field.titulo} recebeu int ({value}). Esperado datetime."
-                    )
-
         super().save(*args, **kwargs)
 
     def publish(self):
