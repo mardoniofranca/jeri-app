@@ -10,11 +10,12 @@ IS_PRODUCTION = bool(os.getenv("DATABASE_URL"))
 
 DEBUG = not IS_PRODUCTION
 
-ALLOWED_HOSTS = (
-    ["www.Jeri.art.br", "Jeri.art.br"]
-    if IS_PRODUCTION
-    else ["localhost", "127.0.0.1"]
-)
+IS_PRODUCTION = 'DYNO' in os.environ  
+
+if IS_PRODUCTION:
+    ALLOWED_HOSTS = ['jeri-b897df38da1d.herokuapp.com', '.herokuapp.com']
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = (
     ["https://www.Jeri.art.br", "https://Jeri.art.br"]
