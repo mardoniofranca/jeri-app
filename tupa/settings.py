@@ -11,13 +11,13 @@ IS_PRODUCTION = bool(os.getenv("DATABASE_URL"))
 DEBUG = not IS_PRODUCTION
 
 ALLOWED_HOSTS = (
-    ["www.atlas.art.br", "atlas.art.br"]
+    ["www.Jeri.art.br", "Jeri.art.br"]
     if IS_PRODUCTION
     else ["localhost", "127.0.0.1"]
 )
 
 CSRF_TRUSTED_ORIGINS = (
-    ["https://www.atlas.art.br", "https://atlas.art.br"]
+    ["https://www.Jeri.art.br", "https://Jeri.art.br"]
     if IS_PRODUCTION
     else ["http://localhost:8000", "http://127.0.0.1:8000"]
 )

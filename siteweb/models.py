@@ -6,6 +6,47 @@ from django.utils import timezone
 
 from datetime import datetime
 
+STATUS_PROJETO = [
+    ('1', 'EM NEGOCIACAO'),
+    ('2', 'AGUARDANDO INICIAR'),
+    ('3', 'EM EXECUCAO'),
+    ('4', 'CONCLUÍDO'),
+    ('5', 'BLOQUEADO'),   
+]
+
+class Projeto(models.Model):
+    id             = models.AutoField(primary_key=True)  # Adicione esta linha   
+    data_cadastro  = models.DateTimeField(default=timezone.now)
+    data_inicio    = models.DateTimeField(default=timezone.now)
+    data_final     = models.DateTimeField(default=timezone.now)
+    titulo         = models.CharField(max_length=300)
+    descricao      = models.TextField(null=True)
+    status_projeto = models.CharField(max_length=20,choices=STATUS_PROJETO,default='CE',null=True)
+  
+    def save(self, *args, **kwargs):
+        for field in self._meta.concrete_fields:
+
+            if isinstance(field, models.CharField):
+                value = getattr(self, field.attname)
+                if value is not None:
+                    setattr(self, field.attname, str(value).upper())
+
+            if isinstance(field, models.DateTimeField):
+                value = getattr(self, field.attname)
+                if isinstance(value, int):
+                    raise ValueError(
+                        f"{field.titulo} recebeu int ({value}). Esperado datetime."
+                    )
+
+        super().save(*args, **kwargs)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.titulo
+
 
 ESTADOS_BRASIL = [
     ('AC', 'ACRE'),
@@ -206,4 +247,3 @@ class Cliente_Hist(models.Model):
 
     def __str__(self):
         return f'{self.nome} - {self.operacao} - {self.data_hora}'
-
