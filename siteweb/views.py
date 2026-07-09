@@ -7,10 +7,14 @@ from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import FormCliente, FormAtendimento
-from .models import Cliente, Atendimento, Movimentacao
+from .models import Cliente, Atendimento, Movimentacao, Projeto
 from django.http import HttpResponse
 from .models import Cliente_Hist
 from django.core.paginator import Paginator
+
+from django.db.models import Count
+from django.utils import timezone
+from datetime import timedelta
 
 
 def login_view(request):
@@ -42,7 +46,15 @@ def login_view(request):
 
 @login_required
 def menu_view(request):
-    return render(request, 'menu.html')
+    hoje = timezone.now().date()
+    projetos = Projeto.objects.all().order_by('-id')
+    context = {
+        'hoje': hoje,
+        'projetos': projetos,
+        'total_projetos': projetos.count(),
+    }
+
+    return render(request, 'menu.html', context)
 
 
 

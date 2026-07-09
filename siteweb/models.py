@@ -21,7 +21,7 @@ class Projeto(models.Model):
     data_final     = models.DateTimeField(default=timezone.now)
     titulo         = models.CharField(max_length=300)
     descricao      = models.TextField(null=True)
-    status_projeto = models.CharField(max_length=20,choices=STATUS_PROJETO,default='CE',null=True)
+    status_projeto = models.CharField(max_length=20,choices=STATUS_PROJETO,default='1',null=True)
   
     def save(self, *args, **kwargs):
         for field in self._meta.concrete_fields:
