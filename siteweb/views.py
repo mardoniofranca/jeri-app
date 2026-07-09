@@ -18,20 +18,6 @@ from datetime import timedelta
 
 from django.db.models import Count
 
-total = Projeto.objects.count()
-
-negociacao = Projeto.objects.filter(status_projeto='1').count()
-aguardando = Projeto.objects.filter(status_projeto='2').count()
-execucao = Projeto.objects.filter(status_projeto='3').count()
-concluido = Projeto.objects.filter(status_projeto='4').count()
-bloqueado = Projeto.objects.filter(status_projeto='5').count()
-
-
-
-def pct(valor):
-    return round((valor / total) * 100, 1) if total else 0
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -60,10 +46,23 @@ def login_view(request):
 
 
 @login_required
-def menu_view(request):
-    hoje = timezone.now().date()
-    projetos = Projeto.objects.all().order_by('-id')
-    status_choices = Projeto.STATUS_PROJETO  
+def menu_view(request):   
+
+    total = Projeto.objects.count()
+
+    negociacao = Projeto.objects.filter(status_projeto='1').count()
+    aguardando = Projeto.objects.filter(status_projeto='2').count()
+    execucao = Projeto.objects.filter(status_projeto='3').count()
+    concluido = Projeto.objects.filter(status_projeto='4').count()
+    bloqueado = Projeto.objects.filter(status_projeto='5').count()
+
+
+
+    def pct(valor):
+        return round((valor / total) * 100, 1) if total else 0
+        hoje = timezone.now().date()
+        projetos = Projeto.objects.all().order_by('-id')
+        status_choices = Projeto.STATUS_PROJETO  
 
     context = {
         'hoje': hoje,
