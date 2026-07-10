@@ -2,31 +2,19 @@
 {% block content %}
 
 <div class="row align-items-stretch">
-    <!-- Tabela -->
     <div class="col-lg-8 d-flex">
-        <div class="card w-100 h-100">
-            <div class="card-body d-flex flex-column">
+        <div class="card w-100 h-90">
+            <div class="card-body d-flex flex-column" style="min-height: 0;">
 
-         <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
-            <h4 class="card-title fw-semibold mb-0">
-                <i class="bi bi-kanban me-2 text-primary"></i>Projetos
-            </h4>
-            <div>
-                <select class="form-select" name="status" id="filtro-status">
-                    <option value="">Todos os status</option>
-                    {% for valor, label in status_choices %}
-                        <option value="{{ valor }}">{{ label }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
+                    <h4 class="card-title fw-semibold mb-0">
+                        <i class="bi bi-kanban me-2 text-primary"></i>Projetos
+                    </h4>
+                    <!-- resto do cabeçalho -->
+                </div>
 
-            <button type="button" class="btn btn-primary btn-sm">
-                <i class="ti ti-plus"></i> Novo
-            </button>
-        </div>
-
-        <div class="table-responsive flex-grow-1">
-            <table class="table align-middle text-nowrap mb-0">
+                <div class="table-responsive" style="min-height: 0; overflow-y: auto;">
+                    <table class="table align-middle text-nowrap mb-0">
 
                 <thead>
                     <tr class="text-muted fw-semibold">
@@ -102,32 +90,31 @@
                 </tbody>
 
             </table>
-            <br />
+                </div>
 
-            <nav aria-label="...">
-                <ul class="pagination pagination-lg">
-                    <li class="page-item active" aria-current="page">
-                        <span class="page-link">1</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0)">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0)">3</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                <nav aria-label="..." class="mt-auto pt-3">
+                    <ul class="pagination pagination-lg">
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">1</span>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)">3</a>
+                        </li>
+                    </ul>
+                </nav>
 
             </div>
         </div>
     </div>
 
     <!-- Lado direito -->
-    <div class="col-lg-4 d-flex flex-column">
+    <div class="col-lg-4 d-flex flex-column gap-4">
 
         <!-- Resumo -->
-        <div class="card mb-4">
+        <div class="card">
             <div class="card-body">
 
                 <h5 class="card-title fw-semibold mb-4">
@@ -161,16 +148,15 @@
 
             </div>
         </div>
-
         <!-- Pizza -->
-        <div class="card flex-grow-1">
-            <div class="card-body">
+        <div class="card flex-grow-1 d-flex flex-column">
+            <div class="card-body d-flex flex-column">
 
                 <h5 class="card-title fw-semibold">
                     Situação dos Projetos
                 </h5>
 
-                <div id="breakup-projetos"></div>
+                <div id="breakup-projetos" class="flex-grow-1 d-flex align-items-center justify-content-center"></div>
 
             </div>
         </div>
@@ -179,13 +165,15 @@
 
 </div>
 
+
+
 <br clear="all">
 
 
 <div class="row align-items-stretch">
     <!-- Tabela -->
     <div class="col-lg-8 d-flex">
-        <div class="card w-100 h-100">
+        <div class="card w-100 h-90">
             <div class="card-body d-flex flex-column">
 
          <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
@@ -372,7 +360,7 @@
 <div class="row align-items-stretch">
     <!-- Tabela -->
     <div class="col-lg-8 d-flex">
-        <div class="card w-100 h-100">
+        <div class="card w-100 h-90">
             <div class="card-body d-flex flex-column">
 
          <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
