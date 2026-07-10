@@ -41,13 +41,20 @@
 
                     <tr>
 
-                      <td>
+                       <td>
                             <h6 class="fw-semibold mb-0">
-                            <a href="{% url 'editar_projeto' projeto.id %}"> {{ projeto.titulo }} </a>
+                                <a href="{% url 'detalhe_projeto' projeto.id %}"> {{ projeto.titulo }} </a>
+
+                                <a href="{% url 'detalhe_projeto' projeto.id %}"
+                                    class="btn btn-light btn-sm rounded-circle"
+                                    title="Ver projeto">
+                                    <i class="ti ti-search"></i>
+                                </a>
+
                                 <a href="{% url 'editar_projeto' projeto.id %}"
                                     class="btn btn-light btn-sm rounded-circle"
-                                    title="Abrir projeto">
-                                    <i class="ti ti-arrow-right"></i>
+                                    title="Editar projeto">
+                                    <i class="ti ti-pencil"></i>
                                 </a>
                             </h6>
                         </td>

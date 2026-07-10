@@ -17,7 +17,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import UsuarioForm, PerfilUsuarioForm
 
-
+from django.db.models import Count, Q
 
 
 @login_required
@@ -232,18 +232,26 @@ def nova_tarefa_view(request, pk=None):
                 messages.success(request, 'Tarefa atualizada com sucesso!')
             else:
                 messages.success(request, 'Tarefa cadastrada com sucesso!')
+
+            # 🔑 aqui é o pulo do gato
+            projeto_id = request.POST.get('projeto_origem')
+            if projeto_id:
+                return redirect('detalhe_projeto', pk=projeto_id)
             return redirect('menu')
     else:
         form = TarefaForm(instance=tarefa)
+        projeto_id = request.GET.get('projeto')
+        if projeto_id and not pk:
+            projeto = get_object_or_404(Projeto, pk=projeto_id)
+            form.fields['cod_projeto'].initial = projeto.id
 
     context = {
         'form': form,
         'titulo_pagina': titulo_pagina,
         'tarefa': tarefa,
+        'projeto_origem': request.GET.get('projeto'),
     }
     return render(request, 'nova_tarefa.html', context)
-
-
 
 @login_required
 def novo_usuario_view(request, pk=None):
@@ -294,3 +302,43 @@ def novo_usuario_view(request, pk=None):
         'usuario': usuario,
     }
     return render(request, 'novo_usuario.html', context)
+
+
+@login_required
+def detalhe_projeto_view(request, pk):
+
+    projeto = get_object_or_404(Projeto, pk=pk)
+
+    tarefas = Tarefa.objects.filter(cod_projeto=projeto).order_by('-id')
+
+    status_tarefa = Tarefa.STATUS_TAREFA
+
+    # --- Métricas de tarefas DESSE projeto ---
+    total_tarefas = tarefas.count()
+    tarefa_planejamento = tarefas.filter(status_tarefa='1').count()
+    tarefa_aguardando   = tarefas.filter(status_tarefa='2').count()
+    tarefa_execucao     = tarefas.filter(status_tarefa='3').count()
+    tarefa_concluido    = tarefas.filter(status_tarefa='4').count()
+    tarefa_bloqueado    = tarefas.filter(status_tarefa='5').count()
+
+    # --- Usuários (time) que atuam nesse projeto (via tarefas) ---
+    usuarios_ids = tarefas.exclude(usuario__isnull=True).values_list('usuario_id', flat=True).distinct()
+
+    usuarios = User.objects.filter(id__in=usuarios_ids).annotate(
+        total_tarefas_projeto=Count('tarefas', filter=Q(tarefas__cod_projeto=projeto), distinct=True)
+    )
+
+    context = {
+        'projeto': projeto,
+        'tarefas': tarefas,
+        'usuarios': usuarios,
+        'status_tarefa': status_tarefa,
+        'total_tarefas': total_tarefas,
+        'tarefa_planejamento': tarefa_planejamento,
+        'tarefa_aguardando': tarefa_aguardando,
+        'tarefa_execucao': tarefa_execucao,
+        'tarefa_concluido': tarefa_concluido,
+        'tarefa_bloqueado': tarefa_bloqueado,
+    }
+
+    return render(request, 'detalhe_projeto.html', context)

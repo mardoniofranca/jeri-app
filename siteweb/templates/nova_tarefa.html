@@ -25,6 +25,10 @@
                         {% if form.titulo.errors %}
                             <div class="text-danger small mt-1">{{ form.titulo.errors }}</div>
                         {% endif %}
+
+                        {% if projeto_origem %}
+                            <input type="hidden" name="projeto_origem" value="{{ projeto_origem }}">
+                        {% endif %}
                     </div>
 
                     <div class="row">
