@@ -149,7 +149,7 @@
                         <i class="ti ti-circle"></i>
                       </div>
 
-                      <a href="{% url 'cliente' %}" >
+                      <a href="#" >
                       <span class="hide-menu">
                         Projetos</span></a>
                     </div>
@@ -169,7 +169,7 @@
                       <div class="round-16 d-flex align-items-center justify-content-center">
                         <i class="ti ti-circle"></i>
                       </div>
-                      <a href="{% url 'atendimento' %}" >
+                      <a href="#" >
                       <span class="hide-menu">Times</span></a>
                     </div>       
                   </a>
@@ -372,6 +372,21 @@
 
   <!-- solar icons -->
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const botoesNavegar = document.querySelectorAll('.btn-navegar');
+
+          botoesNavegar.forEach(function (botao) {
+              botao.addEventListener('click', function () {
+                  const url = botao.getAttribute('data-url');
+                  if (url) {
+                      window.location.href = url;
+                  }
+              });
+          });
+      });
+  </script>
 
 </body>
 

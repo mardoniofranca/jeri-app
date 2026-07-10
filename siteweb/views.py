@@ -10,8 +10,21 @@ from django.core.paginator import Paginator
 from django.db.models import Count
 from django.utils import timezone
 from datetime import timedelta
+from django.shortcuts import render, redirect
+from .forms import ProjetoForm
 
+@login_required
+def novo_projeto_view(request):
+    if request.method == 'POST':
+        form = ProjetoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Projeto cadastrado com sucesso!')
+            return redirect('menu')  # ajuste para o nome da sua url de listagem
+    else:
+        form = ProjetoForm()
 
+    return render(request, 'novo_projeto.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
@@ -179,11 +192,3 @@ def menu_view(request):
 
     return render(request, 'menu.html', context)
 
-@login_required
-def cliente_view(request):
-    return render(request, 'cliente.html')
-
-
-@login_required
-def atendimento_view(request):
-    return render(request, 'atendimento.html')
