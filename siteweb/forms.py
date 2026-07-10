@@ -51,7 +51,7 @@ class TarefaForm(forms.ModelForm):
         }
 
 
-class UsuarioForm(forms.ModelForm):
+class _UsuarioForm(forms.ModelForm):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Deixe em branco para não alterar'}),
         label='Senha',
@@ -75,6 +75,37 @@ class UsuarioForm(forms.ModelForm):
             'email': 'E-mail',
             'is_active': 'Ativo',
         }
+
+
+class UsuarioForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Deixe em branco para não alterar',
+            'autocomplete': 'new-password'  # evita autofill de senha salva
+        }),
+        label='Senha',
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'is_active']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+        labels = {
+            'username': 'Usuário (login)',
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'email': 'E-mail',
+            'is_active': 'Ativo',
+        }
+
 
 
 class PerfilUsuarioForm(forms.ModelForm):
