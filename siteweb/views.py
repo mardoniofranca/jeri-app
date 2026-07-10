@@ -15,7 +15,7 @@ from .forms import ProjetoForm
 
 
 @login_required
-def novo_projeto(request, pk=None):
+def novo_projeto_view(request, pk=None):
     if pk:
         projeto = get_object_or_404(Projeto, pk=pk)
         titulo_pagina = "Editar Projeto"
