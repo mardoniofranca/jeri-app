@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">{{ titulo_pagina }}</h5>
+
+        <div class="card">
+            <div class="card-body">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <h6 class="fw-semibold mb-3">Dados de Acesso</h6>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.username.id_for_label }}" class="form-label">Usuário (login)</label>
+                            {{ user_form.username }}
+                            {% if user_form.username.errors %}
+                                <div class="text-danger small mt-1">{{ user_form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.password.id_for_label }}" class="form-label">Senha</label>
+                            {{ user_form.password }}
+                            <div class="form-text">
+                                {% if usuario %}Deixe em branco para não alterar a senha atual.{% else %}Defina uma senha para o novo usuário.{% endif %}
+                            </div>
+                            {% if user_form.password.errors %}
+                                <div class="text-danger small mt-1">{{ user_form.password.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.first_name.id_for_label }}" class="form-label">Nome</label>
+                            {{ user_form.first_name }}
+                            {% if user_form.first_name.errors %}
+                                <div class="text-danger small mt-1">{{ user_form.first_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.last_name.id_for_label }}" class="form-label">Sobrenome</label>
+                            {{ user_form.last_name }}
+                            {% if user_form.last_name.errors %}
+                                <div class="text-danger small mt-1">{{ user_form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ user_form.email.id_for_label }}" class="form-label">E-mail</label>
+                        {{ user_form.email }}
+                        {% if user_form.email.errors %}
+                            <div class="text-danger small mt-1">{{ user_form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4 form-check">
+                        {{ user_form.is_active }}
+                        <label for="{{ user_form.is_active.id_for_label }}" class="form-check-label">Usuário ativo</label>
+                    </div>
+
+                    <hr>
+
+                    <h6 class="fw-semibold mb-3 mt-4">Dados do Perfil</h6>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ perfil_form.fone.id_for_label }}" class="form-label">Telefone</label>
+                            {{ perfil_form.fone }}
+                            {% if perfil_form.fone.errors %}
+                                <div class="text-danger small mt-1">{{ perfil_form.fone.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ perfil_form.email.id_for_label }}" class="form-label">E-mail de contato</label>
+                            {{ perfil_form.email }}
+                            {% if perfil_form.email.errors %}
+                                <div class="text-danger small mt-1">{{ perfil_form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ perfil_form.grupo.id_for_label }}" class="form-label">Grupo</label>
+                            {{ perfil_form.grupo }}
+                            {% if perfil_form.grupo.errors %}
+                                <div class="text-danger small mt-1">{{ perfil_form.grupo.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ perfil_form.papel.id_for_label }}" class="form-label">Papel</label>
+                            {{ perfil_form.papel }}
+                            {% if perfil_form.papel.errors %}
+                                <div class="text-danger small mt-1">{{ perfil_form.papel.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ perfil_form.perfil.id_for_label }}" class="form-label">Perfil</label>
+                            {{ perfil_form.perfil }}
+                            {% if perfil_form.perfil.errors %}
+                                <div class="text-danger small mt-1">{{ perfil_form.perfil.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ perfil_form.bio.id_for_label }}" class="form-label">Biografia</label>
+                        {{ perfil_form.bio }}
+                        {% if perfil_form.bio.errors %}
+                            <div class="text-danger small mt-1">{{ perfil_form.bio.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ti ti-device-floppy me-1"></i>
+                        {% if usuario %}Atualizar Usuário{% else %}Salvar Usuário{% endif %}
+                    </button>
+                    <a href="{% url 'menu' %}" class="btn btn-light">Cancelar</a>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

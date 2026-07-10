@@ -149,8 +149,3 @@ class Perfil_Usuario(models.Model):
         return f"Perfil de {self.usuario.username}"
 
 
-# Cria o Perfil_Usuario automaticamente quando um novo User é criado
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def criar_perfil_usuario(sender, instance, created, **kwargs):
-    if created:
-        Perfil_Usuario.objects.create(usuario=instance)

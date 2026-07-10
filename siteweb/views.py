@@ -12,6 +12,12 @@ from django.utils import timezone
 from datetime import timedelta
 from django.shortcuts import render, redirect
 from .forms import ProjetoForm
+from .forms import TarefaForm
+from django.contrib.auth.models import User
+from django.contrib import messages
+from .forms import UsuarioForm, PerfilUsuarioForm
+
+
 
 
 @login_required
@@ -208,3 +214,83 @@ def menu_view(request):
 
     return render(request, 'menu.html', context)
 
+
+@login_required
+def nova_tarefa_view(request, pk=None):
+    if pk:
+        tarefa = get_object_or_404(Tarefa, pk=pk)
+        titulo_pagina = "Editar Tarefa"
+    else:
+        tarefa = None
+        titulo_pagina = "Nova Tarefa"
+
+    if request.method == 'POST':
+        form = TarefaForm(request.POST, instance=tarefa)
+        if form.is_valid():
+            form.save()
+            if pk:
+                messages.success(request, 'Tarefa atualizada com sucesso!')
+            else:
+                messages.success(request, 'Tarefa cadastrada com sucesso!')
+            return redirect('menu')
+    else:
+        form = TarefaForm(instance=tarefa)
+
+    context = {
+        'form': form,
+        'titulo_pagina': titulo_pagina,
+        'tarefa': tarefa,
+    }
+    return render(request, 'nova_tarefa.html', context)
+
+
+
+@login_required
+def novo_usuario_view(request, pk=None):
+    if pk:
+        usuario = get_object_or_404(User, pk=pk)
+        perfil = usuario.perfil  # já existe, criado pelo signal
+        titulo_pagina = "Editar Usuário"
+    else:
+        usuario = None
+        perfil = None
+        titulo_pagina = "Novo Usuário"
+
+    if request.method == 'POST':
+        user_form = UsuarioForm(request.POST, instance=usuario)
+        perfil_form = PerfilUsuarioForm(request.POST, instance=perfil)
+
+        # Na criação, senha é obrigatória
+        senha = request.POST.get('password')
+        if not pk and not senha:
+            user_form.add_error('password', 'A senha é obrigatória para novos usuários.')
+
+        if user_form.is_valid() and perfil_form.is_valid():
+            novo = user_form.save(commit=False)
+
+            if senha:
+                novo.set_password(senha)
+
+            novo.save()  # se for criação, o signal cria o Perfil_Usuario automaticamente
+
+            # associa e salva o perfil (criado agora ou já existente)
+            perfil_obj = perfil_form.save(commit=False)
+            perfil_obj.usuario = novo
+            perfil_obj.save()
+
+            if pk:
+                messages.success(request, 'Usuário atualizado com sucesso!')
+            else:
+                messages.success(request, 'Usuário cadastrado com sucesso!')
+            return redirect('menu')
+    else:
+        user_form = UsuarioForm(instance=usuario)
+        perfil_form = PerfilUsuarioForm(instance=perfil)
+
+    context = {
+        'user_form': user_form,
+        'perfil_form': perfil_form,
+        'titulo_pagina': titulo_pagina,
+        'usuario': usuario,
+    }
+    return render(request, 'novo_usuario.html', context)

@@ -202,7 +202,7 @@
                 </select>
             </div>
 
-            <button type="button" class="btn btn-primary btn-sm">
+            <button type="button" class="btn btn-primary btn-sm btn-navegar" data-url="{% url 'nova_tarefa' %}">
                 <i class="ti ti-plus"></i> Novo
             </button>
         </div>
@@ -225,12 +225,12 @@
 
                         <td>
                             <h6 class="fw-semibold mb-0">
-                               <a href="#"> {{ tarefa.titulo }} </a>
-                                 <a href="#"
-                            class="btn btn-light btn-sm rounded-circle"
-                            title="Abrir tarefa">
-                                <i class="ti ti-arrow-right"></i>
-                            </a>
+                                <a href="{% url 'editar_tarefa' tarefa.id %}"> {{ tarefa.titulo }} </a>
+                                <a href="{% url 'editar_tarefa' tarefa.id %}"
+                                    class="btn btn-light btn-sm rounded-circle"
+                                    title="Abrir tarefa">
+                                    <i class="ti ti-arrow-right"></i>
+                                </a>
                             </h6>
                         </td>
 
@@ -379,8 +379,7 @@
            <h4 class="card-title fw-semibold mb-0">
                 <i class="bi bi-people-fill me-2 text-primary"></i>Times
             </h4>
-
-            <button type="button" class="btn btn-primary btn-sm">
+            <button type="button" class="btn btn-primary btn-sm btn-navegar" data-url="{% url 'novo_usuario' %}">
                 <i class="ti ti-plus"></i> Novo
             </button>
         </div>
@@ -403,8 +402,8 @@
                     <tr>
                         <td>
                             <h6 class="fw-semibold mb-0">
-                                <a href="#">{{ usuario.get_full_name|default:usuario.username }}</a>
-                                <a href="#" class="btn btn-light btn-sm rounded-circle" title="Ver usuário">
+                                <a href="{% url 'editar_usuario' usuario.id %}">{{ usuario.get_full_name|default:usuario.username }}</a>
+                                <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-light btn-sm rounded-circle" title="Ver usuário">
                                     <i class="ti ti-arrow-right"></i>
                                 </a>
                             </h6>

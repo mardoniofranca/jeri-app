@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">{{ titulo_pagina }}</h5>
+
+        <div class="card">
+            <div class="card-body">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.titulo.id_for_label }}" class="form-label">Título da Tarefa</label>
+                        {{ form.titulo }}
+                        {% if form.titulo.errors %}
+                            <div class="text-danger small mt-1">{{ form.titulo.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.usuario.id_for_label }}" class="form-label">Responsável</label>
+                            {{ form.usuario }}
+                            {% if form.usuario.errors %}
+                                <div class="text-danger small mt-1">{{ form.usuario.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.cod_projeto.id_for_label }}" class="form-label">Projeto</label>
+                            {{ form.cod_projeto }}
+                            {% if form.cod_projeto.errors %}
+                                <div class="text-danger small mt-1">{{ form.cod_projeto.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição</label>
+                        {{ form.descricao }}
+                        <div class="form-text">Descreva os detalhes da tarefa.</div>
+                        {% if form.descricao.errors %}
+                            <div class="text-danger small mt-1">{{ form.descricao.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.data_inicio.id_for_label }}" class="form-label">Data de Início</label>
+                            {{ form.data_inicio }}
+                            {% if form.data_inicio.errors %}
+                                <div class="text-danger small mt-1">{{ form.data_inicio.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.data_final.id_for_label }}" class="form-label">Data Final</label>
+                            {{ form.data_final }}
+                            {% if form.data_final.errors %}
+                                <div class="text-danger small mt-1">{{ form.data_final.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.tipo_tarefa.id_for_label }}" class="form-label">Tipo</label>
+                            {{ form.tipo_tarefa }}
+                            {% if form.tipo_tarefa.errors %}
+                                <div class="text-danger small mt-1">{{ form.tipo_tarefa.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.status_tarefa.id_for_label }}" class="form-label">Status</label>
+                            {{ form.status_tarefa }}
+                            {% if form.status_tarefa.errors %}
+                                <div class="text-danger small mt-1">{{ form.status_tarefa.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ti ti-device-floppy me-1"></i>
+                        {% if tarefa %}Atualizar Tarefa{% else %}Salvar Tarefa{% endif %}
+                    </button>
+                    <a href="{% url 'menu' %}" class="btn btn-light">Cancelar</a>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
