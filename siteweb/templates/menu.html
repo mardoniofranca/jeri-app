@@ -10,7 +10,18 @@
                     <h4 class="card-title fw-semibold mb-0">
                         <i class="bi bi-kanban me-2 text-primary"></i>Projetos
                     </h4>
-                    <!-- resto do cabeçalho -->
+                <div>
+                    <select class="form-select" name="status" id="filtro-status">
+                        <option value="">Todos os status</option>
+                        {% for valor, label in status_choices %}
+                            <option value="{{ valor }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-sm">
+                    <i class="ti ti-plus"></i> Novo
+                </button>
                 </div>
 
                 <div class="table-responsive" style="min-height: 0; overflow-y: auto;">
