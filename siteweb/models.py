@@ -19,6 +19,15 @@ class Projeto(models.Model):
     ]
     
     id             = models.AutoField(primary_key=True)  # Adicione esta linha   
+    usuario        = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='projetos',
+        verbose_name='Responsável',
+        null=True,
+        blank=True
+    )
+
     data_cadastro  = models.DateTimeField(default=timezone.now)
     data_inicio    = models.DateTimeField(default=timezone.now)
     data_final     = models.DateTimeField(default=timezone.now)
@@ -26,6 +35,63 @@ class Projeto(models.Model):
     descricao      = models.TextField(null=True)
     status_projeto = models.CharField(max_length=20,choices=STATUS_PROJETO,default='1',null=True)
   
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.titulo
+
+
+class Tarefa(models.Model):
+
+    TIPO_TAREFA = [
+    ('1', 'DOCUMENTAÇÃO'),
+    ('2', 'CÓDIGO'),
+    ('3', 'ANÁLISE'),
+    ('4', 'PLANEJAMENTO'),
+    ('5', 'GESTÃO'),   
+    ]
+
+    STATUS_TAREFA = [
+    ('1', 'EM PLANEJAMENTO'),
+    ('2', 'AGUARDANDO INICIAR'),
+    ('3', 'EM EXECUCAO'),
+    ('4', 'CONCLUÍDO'),
+    ('5', 'BLOQUEADO'),   
+    ]
+    
+    id             = models.AutoField(primary_key=True)  # Adicione esta linha   
+    usuario        = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='tarefas',
+        verbose_name='Responsável',
+        null=True,
+        blank=True
+    )
+
+    cod_projeto  = models.ForeignKey(
+        Projeto,
+        on_delete=models.CASCADE,
+        related_name='projetos',
+        verbose_name='Projeto',
+        null=True,
+        blank=True
+    )
+
+    data_cadastro  = models.DateTimeField(default=timezone.now)
+    data_inicio    = models.DateTimeField(default=timezone.now)
+    data_final     = models.DateTimeField(default=timezone.now)
+    titulo         = models.CharField(max_length=300)
+    descricao      = models.TextField(null=True)
+    status_tarefa  = models.CharField(max_length=20,choices=STATUS_TAREFA,default='1',null=True)
+    tipo_tarefa    = models.CharField(max_length=20,choices=TIPO_TAREFA,default='1',null=True)
+  
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 

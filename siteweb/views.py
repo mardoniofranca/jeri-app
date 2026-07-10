@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import FormCliente, FormAtendimento
-from .models import Cliente, Atendimento, Movimentacao, Projeto, Cliente_Hist
+from .models import Cliente, Atendimento, Movimentacao, Projeto, Tarefa, Cliente_Hist
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.db.models import Count
@@ -34,7 +34,11 @@ def pct(valor, total):
 def menu_view(request):
     hoje = timezone.now().date()
     projetos = Projeto.objects.all().order_by('-id')
+    tarefas  = Tarefa.objects.all().order_by('-id')
+
+
     status_choices = Projeto.STATUS_PROJETO
+    status_tarefa  = Tarefa.STATUS_TAREFA
 
     total = projetos.count()
     negociacao = projetos.filter(status_projeto='1').count()
@@ -46,6 +50,7 @@ def menu_view(request):
     context = {
         'hoje': hoje,
         'projetos': projetos,
+        'tarefas' : tarefas,
         'total_projetos': total,
         "pct_negociacao": pct(negociacao, total),
         "pct_aguardando": pct(aguardando, total),
@@ -58,6 +63,7 @@ def menu_view(request):
         "concluido": concluido,
         "bloqueado": bloqueado,
         "status_choices": status_choices,
+        "status_tarefa": status_tarefa,
     }
 
     return render(request, 'menu.html', context)
