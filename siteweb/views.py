@@ -20,6 +20,10 @@ from .forms import UsuarioForm, PerfilUsuarioForm
 from django.db.models import Count, Q
 
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+
 @login_required
 def novo_projeto_view(request, pk=None):
     if pk:
@@ -347,7 +351,7 @@ def detalhe_projeto_view(request, pk):
 
 
 @login_required
-def minhas_tarefas_view(request):
+def _minhas_tarefas_view(request):
     tarefas = Tarefa.objects.filter(usuario=request.user).select_related('cod_projeto').order_by('-data_final')
 
     # Agrupa as tarefas por status, na ordem da esteira
@@ -364,3 +368,92 @@ def minhas_tarefas_view(request):
         'total_tarefas': tarefas.count(),
     }
     return render(request, 'minhas_tarefas.html', context)
+
+
+@login_required
+def minhas_tarefas_view(request):
+    projeto_id = request.GET.get('projeto')
+
+    tarefas_usuario = Tarefa.objects.filter(usuario=request.user).select_related('cod_projeto')
+
+    # Lista de projetos que o usuário tem tarefas, para popular o filtro (select)
+    projetos_usuario = Projeto.objects.filter(
+        id__in=tarefas_usuario.values_list('cod_projeto_id', flat=True).distinct()
+    ).order_by('titulo')
+
+    if projeto_id:
+        # --- MODO: projeto selecionado -> só as fases desse projeto ---
+        projeto_selecionado = get_object_or_404(Projeto, pk=projeto_id)
+        tarefas = tarefas_usuario.filter(cod_projeto=projeto_selecionado).order_by('-data_final')
+
+        colunas = []
+        for valor, label in Tarefa.STATUS_TAREFA:
+            colunas.append({
+                'valor': valor,
+                'label': label,
+                'tarefas': tarefas.filter(status_tarefa=valor),
+            })
+
+        grupos = [{
+            'projeto': projeto_selecionado,
+            'colunas': colunas,
+            'total': tarefas.count(),
+        }]
+
+        context = {
+            'grupos': grupos,
+            'projetos_usuario': projetos_usuario,
+            'projeto_selecionado': projeto_selecionado,
+            'total_tarefas': tarefas.count(),
+        }
+
+    else:
+        # --- MODO: nenhum projeto selecionado -> agrupa por projeto, cada um com suas fases ---
+        grupos = []
+
+        for projeto in projetos_usuario:
+            tarefas_projeto = tarefas_usuario.filter(cod_projeto=projeto).order_by('-data_final')
+
+            colunas = []
+            for valor, label in Tarefa.STATUS_TAREFA:
+                colunas.append({
+                    'valor': valor,
+                    'label': label,
+                    'tarefas': tarefas_projeto.filter(status_tarefa=valor),
+                })
+
+            grupos.append({
+                'projeto': projeto,
+                'colunas': colunas,
+                'total': tarefas_projeto.count(),
+            })
+
+        # Tarefas sem projeto vinculado (cod_projeto=null), se houver
+        tarefas_sem_projeto = tarefas_usuario.filter(cod_projeto__isnull=True).order_by('-data_final')
+        if tarefas_sem_projeto.exists():
+            colunas = []
+            for valor, label in Tarefa.STATUS_TAREFA:
+                colunas.append({
+                    'valor': valor,
+                    'label': label,
+                    'tarefas': tarefas_sem_projeto.filter(status_tarefa=valor),
+                })
+            grupos.append({
+                'projeto': None,
+                'colunas': colunas,
+                'total': tarefas_sem_projeto.count(),
+            })
+
+        context = {
+            'grupos': grupos,
+            'projetos_usuario': projetos_usuario,
+            'projeto_selecionado': None,
+            'total_tarefas': tarefas_usuario.count(),
+        }
+
+    return render(request, 'minhas_tarefas.html', context)
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+

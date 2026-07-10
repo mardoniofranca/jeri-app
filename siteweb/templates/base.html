@@ -16,7 +16,17 @@
     href="{% static 'assets/css/styles.min.css' %}" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-</head>
+
+    <style>
+      html {
+          scroll-behavior: smooth;
+      }
+
+      #projetos, #tarefas, #times {
+          scroll-margin-top: 110px;
+      }
+    </style>
+  </head>
 
 <body>
 
@@ -55,23 +65,44 @@
           </a>
 
           <a 
-             href="#"
+             href="{% url 'menu' %}#projetos"
              class="link-hover d-flex align-items-center gap-2 border-0 text-white lh-sm fs-4">
 
             <iconify-icon class="fs-6"
                            icon="solar:question-circle-linear"></iconify-icon>
 
-            Formulários
+            Projetos
           </a>
 
           <a 
-             href="#"
+             href="{% url 'menu' %}#tarefas"
              class="link-hover d-flex align-items-center gap-2 border-0 text-white lh-sm fs-4">
 
             <iconify-icon class="fs-6"
                            icon="solar:case-round-linear"></iconify-icon>
 
-            Relatórios
+            Tarefas
+          </a>
+
+
+               <a 
+             href="{% url 'menu' %}#times"
+             class="link-hover d-flex align-items-center gap-2 border-0 text-white lh-sm fs-4">
+
+            <iconify-icon class="fs-6"
+                           icon="solar:case-round-linear"></iconify-icon>
+
+            Times
+          </a>
+
+          <a 
+             href="{% url 'logout' %}"
+             class="link-hover d-flex align-items-center gap-2 border-0 text-white lh-sm fs-4">
+
+            <iconify-icon class="fs-6"
+                           icon="solar:case-round-linear"></iconify-icon>
+
+            Sair
           </a>
 
         </div>
@@ -117,79 +148,55 @@
 
             </li>
 
-            <li class="sidebar-item">
+              <li class="sidebar-item">
 
-              <a class="sidebar-link justify-content-between has-arrow"
-                 href="javascript:void(0)"
-                 aria-expanded="false">
+              <a class="sidebar-link"
+                  href="{% url 'menu' %}#projetos">
 
-                <div class="d-flex align-items-center gap-3">
-
-                  <span class="d-flex">
-                    <i class="ti ti-layout-grid"></i>
-                  </span>
-
-                  <span class="hide-menu">Formulários</span>
-
-                </div>
-
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Projetos</span>
               </a>
-
-              <ul aria-expanded="false" class="collapse first-level">
-
-                <li class="sidebar-item">
-
-                  <a class="sidebar-link justify-content-between"
-                     
-                     href="#">
-
-                    <div class="d-flex align-items-center gap-3">
-
-                      <div class="round-16 d-flex align-items-center justify-content-center">
-                        <i class="ti ti-circle"></i>
-                      </div>
-
-                      <a href="#" >
-                      <span class="hide-menu">
-                        Projetos</span></a>
-                    </div>
-
-                  </a>
-
-                </li>
-
-                <li class="sidebar-item">
-
-                  <a class="sidebar-link justify-content-between"
-                     
-                     href="#">
-
-                    <div class="d-flex align-items-center gap-3">
-
-                      <div class="round-16 d-flex align-items-center justify-content-center">
-                        <i class="ti ti-circle"></i>
-                      </div>
-                      <a href="#" >
-                      <span class="hide-menu">Times</span></a>
-                    </div>       
-                  </a>
-
-                </li>
-
-              </ul>
-
             </li>
+
 
             <li class="sidebar-item">
 
               <a class="sidebar-link"
-                 href="{% url 'menu' %}"
+                 href="{% url 'menu' %}#tarefas"
                  aria-expanded="false">
 
                 <i class="ti ti-atom"></i>
-                <span class="hide-menu">Relatórios</span>
+                <span class="hide-menu">Tarefas</span>
               </a>
             </li>
+
+
+              <li class="sidebar-item">
+
+              <a class="sidebar-link"
+                 href="{% url 'menu' %}#times"
+                 aria-expanded="false">
+
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Times</span>
+              </a>
+            </li>
+
+
+            <li class="sidebar-item">
+
+              <a class="sidebar-link"
+                 href="{% url 'logout' %}"
+                 aria-expanded="false">
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Sair</span>
+              </a>
+            </li>
+
+
+
+
+
 
 
           </ul>

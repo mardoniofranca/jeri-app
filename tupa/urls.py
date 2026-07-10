@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
-from siteweb.views import login_view, menu_view, novo_projeto_view, nova_tarefa_view,novo_usuario_view,detalhe_projeto_view, minhas_tarefas_view
+from django.contrib.auth import views as auth_views
+from siteweb.views import login_view, menu_view, novo_projeto_view, nova_tarefa_view, novo_usuario_view, detalhe_projeto_view, minhas_tarefas_view, logout_view
 
 
 urlpatterns = [
@@ -18,5 +19,9 @@ urlpatterns = [
     path('usuarios/<int:pk>/editar/', novo_usuario_view, name='editar_usuario'),
 
     path('minhas_tarefas', minhas_tarefas_view, name='minhas_tarefas'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+
+    path('logout/', logout_view, name='logout'),
+
 
 ]
