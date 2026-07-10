@@ -21,21 +21,45 @@
     {% endif %}
 {% endfor %}
 
-<div class="row mb-4">
-    {% for coluna in colunas %}
-        {% if coluna.valor == "2" or coluna.valor == "3" or coluna.valor == "4" %}
-        <!-- Linha 2: Aguardando, Execução, Concluído — 3 colunas iguais -->
-        <div class="col-md-4 mb-3 mb-md-0">
-            {% include "_coluna_kanban.html" with coluna=coluna %}
+
+{% for coluna in colunas %}
+    {% if coluna.valor == "2" %}
+        <!-- Linha 1: Planejamento sozinho, ocupando toda a largura -->
+        <div class="row mb-4">
+            <div class="col-12">
+                {% include "_coluna_kanban.html" with coluna=coluna %}
+            </div>
         </div>
-        {% endif %}
-    {% endfor %}
-</div>
+    {% endif %}
+{% endfor %}
+
+{% for coluna in colunas %}
+    {% if coluna.valor == "3" %}
+        <!-- Linha 1: Planejamento sozinho, ocupando toda a largura -->
+        <div class="row mb-4">
+            <div class="col-12">
+                {% include "_coluna_kanban.html" with coluna=coluna %}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+
+{% for coluna in colunas %}
+    {% if coluna.valor == "4" %}
+        <!-- Linha 3: Bloqueado sozinho, ocupando toda a largura -->
+        <div class="row">
+            <div class="col-12">
+                {% include "_coluna_kanban.html" with coluna=coluna %}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+
 
 {% for coluna in colunas %}
     {% if coluna.valor == "5" %}
-        <!-- Linha 3: Bloqueado sozinho, ocupando toda a largura -->
-        <div class="row">
+        <!-- Linha 1: Planejamento sozinho, ocupando toda a largura -->
+        <div class="row mb-4">
             <div class="col-12">
                 {% include "_coluna_kanban.html" with coluna=coluna %}
             </div>
