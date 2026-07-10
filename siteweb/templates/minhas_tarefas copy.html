@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h4 class="fw-semibold mb-0">
+        <i class="bi bi-kanban me-2 text-primary"></i>Minhas Tarefas
+    </h4>
+    <a href="{% url 'nova_tarefa' %}" class="btn btn-primary btn-sm">
+        <i class="ti ti-plus"></i> Nova Tarefa
+    </a>
+</div>
+
+<div class="row flex-nowrap overflow-auto pb-3" style="gap: 1rem;">
+
+    {% for coluna in colunas %}
+    <div class="col-12 col-md-4 col-lg-3" style="min-width: 280px; max-width: 320px; flex: 0 0 auto;">
+
+        <div class="bg-light rounded-3 p-3 h-100">
+
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h6 class="fw-semibold mb-0">
+                    {{ coluna.label }}
+                    <span class="badge bg-secondary-subtle text-secondary ms-1">{{ coluna.tarefas|length }}</span>
+                </h6>
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+
+                {% for tarefa in coluna.tarefas %}
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+
+                        <div class="d-flex align-items-start justify-content-between mb-2">
+                            <h6 class="fw-semibold mb-0">
+                                <a href="{% url 'editar_tarefa' tarefa.id %}" class="text-dark text-decoration-none">
+                                    {{ tarefa.titulo }}
+                                </a>
+                            </h6>
+                        </div>
+
+                        {% if tarefa.descricao %}
+                        <p class="text-muted small mb-3">
+                            {{ tarefa.descricao|truncatewords:12 }}
+                        </p>
+                        {% endif %}
+
+                        {% if tarefa.cod_projeto %}
+                        <div class="mb-2">
+                            <span class="badge bg-light text-dark border">
+                                <i class="bi bi-kanban me-1"></i>{{ tarefa.cod_projeto.titulo }}
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <div class="d-flex align-items-center justify-content-between mt-3">
+                            <span class="text-muted small">
+                                <i class="ti ti-calendar me-1"></i>{{ tarefa.data_final|date:"d M" }}
+                            </span>
+
+                            {% if tarefa.tipo_tarefa == "1" %}
+                                <span class="badge rounded-pill bg-info">{{ tarefa.get_tipo_tarefa_display }}</span>
+                            {% elif tarefa.tipo_tarefa == "2" %}
+                                <span class="badge rounded-pill bg-primary">{{ tarefa.get_tipo_tarefa_display }}</span>
+                            {% elif tarefa.tipo_tarefa == "3" %}
+                                <span class="badge rounded-pill bg-warning text-dark">{{ tarefa.get_tipo_tarefa_display }}</span>
+                            {% elif tarefa.tipo_tarefa == "4" %}
+                                <span class="badge rounded-pill bg-success">{{ tarefa.get_tipo_tarefa_display }}</span>
+                            {% elif tarefa.tipo_tarefa == "5" %}
+                                <span class="badge rounded-pill bg-dark">{{ tarefa.get_tipo_tarefa_display }}</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted small text-center py-3 mb-0">Nenhuma tarefa</p>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

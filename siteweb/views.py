@@ -307,6 +307,7 @@ def novo_usuario_view(request, pk=None):
 @login_required
 def detalhe_projeto_view(request, pk):
 
+
     projeto = get_object_or_404(Projeto, pk=pk)
 
     tarefas = Tarefa.objects.filter(cod_projeto=projeto).order_by('-id')
@@ -342,3 +343,24 @@ def detalhe_projeto_view(request, pk):
     }
 
     return render(request, 'detalhe_projeto.html', context)
+
+
+
+@login_required
+def minhas_tarefas_view(request):
+    tarefas = Tarefa.objects.filter(usuario=request.user).select_related('cod_projeto').order_by('-data_final')
+
+    # Agrupa as tarefas por status, na ordem da esteira
+    colunas = []
+    for valor, label in Tarefa.STATUS_TAREFA:
+        colunas.append({
+            'valor': valor,
+            'label': label,
+            'tarefas': tarefas.filter(status_tarefa=valor),
+        })
+
+    context = {
+        'colunas': colunas,
+        'total_tarefas': tarefas.count(),
+    }
+    return render(request, 'minhas_tarefas.html', context)

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h4 class="fw-semibold mb-0">
+        <i class="bi bi-kanban me-2 text-primary"></i>Minhas Tarefas
+    </h4>
+    <a href="{% url 'nova_tarefa' %}" class="btn btn-primary btn-sm">
+        <i class="ti ti-plus"></i> Nova Tarefa
+    </a>
+</div>
+
+{% for coluna in colunas %}
+    {% if coluna.valor == "1" %}
+        <!-- Linha 1: Planejamento sozinho, ocupando toda a largura -->
+        <div class="row mb-4">
+            <div class="col-12">
+                {% include "_coluna_kanban.html" with coluna=coluna %}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+
+<div class="row mb-4">
+    {% for coluna in colunas %}
+        {% if coluna.valor == "2" or coluna.valor == "3" or coluna.valor == "4" %}
+        <!-- Linha 2: Aguardando, Execução, Concluído — 3 colunas iguais -->
+        <div class="col-md-4 mb-3 mb-md-0">
+            {% include "_coluna_kanban.html" with coluna=coluna %}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% for coluna in colunas %}
+    {% if coluna.valor == "5" %}
+        <!-- Linha 3: Bloqueado sozinho, ocupando toda a largura -->
+        <div class="row">
+            <div class="col-12">
+                {% include "_coluna_kanban.html" with coluna=coluna %}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from siteweb.views import login_view, menu_view, novo_projeto_view, nova_tarefa_view,novo_usuario_view,detalhe_projeto_view
+from siteweb.views import login_view, menu_view, novo_projeto_view, nova_tarefa_view,novo_usuario_view,detalhe_projeto_view, minhas_tarefas_view
 
 
 urlpatterns = [
@@ -16,5 +16,7 @@ urlpatterns = [
     path('tarefa/<int:pk>/editar/', nova_tarefa_view, name='editar_tarefa'),
     path('usuarios/novo/', novo_usuario_view, name='novo_usuario'),
     path('usuarios/<int:pk>/editar/', novo_usuario_view, name='editar_usuario'),
+
+    path('minhas_tarefas', minhas_tarefas_view, name='minhas_tarefas'),
 
 ]
