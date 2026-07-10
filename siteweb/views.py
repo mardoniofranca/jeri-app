@@ -13,18 +13,34 @@ from datetime import timedelta
 from django.shortcuts import render, redirect
 from .forms import ProjetoForm
 
+
 @login_required
-def novo_projeto_view(request):
+def novo_projeto(request, pk=None):
+    if pk:
+        projeto = get_object_or_404(Projeto, pk=pk)
+        titulo_pagina = "Editar Projeto"
+    else:
+        projeto = None
+        titulo_pagina = "Novo Projeto"
+
     if request.method == 'POST':
-        form = ProjetoForm(request.POST)
+        form = ProjetoForm(request.POST, instance=projeto)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Projeto cadastrado com sucesso!')
-            return redirect('menu')  # ajuste para o nome da sua url de listagem
+            if pk:
+                messages.success(request, 'Projeto atualizado com sucesso!')
+            else:
+                messages.success(request, 'Projeto cadastrado com sucesso!')
+            return redirect('menu')
     else:
-        form = ProjetoForm()
+        form = ProjetoForm(instance=projeto)
 
-    return render(request, 'novo_projeto.html', {'form': form})
+    context = {
+        'form': form,
+        'titulo_pagina': titulo_pagina,
+        'projeto': projeto,
+    }
+    return render(request, 'novo_projeto.html', context)
 
 def login_view(request):
     if request.method == 'POST':

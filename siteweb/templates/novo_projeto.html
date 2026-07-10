@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">Novo Projeto</h5>
+        <h5 class="card-title fw-semibold mb-4">{{ titulo_pagina }}</h5>
 
         <div class="card">
             <div class="card-body">
@@ -71,7 +71,8 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">
-                        <i class="ti ti-device-floppy me-1"></i> Salvar Projeto
+                        <i class="ti ti-device-floppy me-1"></i>
+                        {% if projeto %}Atualizar Projeto{% else %}Salvar Projeto{% endif %}
                     </button>
                     <a href="{% url 'menu' %}" class="btn btn-light">Cancelar</a>
 

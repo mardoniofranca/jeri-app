@@ -9,5 +9,7 @@ urlpatterns = [
     path('', login_view, name='login'),
     path('menu/', menu_view, name='menu'),
     path('projetos/novo/', novo_projeto_view, name='novo_projeto'),
+    path('projetos/<int:pk>/editar/', novo_projeto_view, name='editar_projeto'),
+
 
 ]
