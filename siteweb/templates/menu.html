@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="row">
+<div class="row align-items-stretch">
     <!-- Tabela -->
-    <div class="col-lg-8">
-        <div class="card w-100">
-            <div class="card-body">
+    <div class="col-lg-8 d-flex">
+        <div class="card w-100 h-100">
+            <div class="card-body d-flex flex-column">
 
          <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
-            <h4 class="card-title fw-semibold mb-0">Projetos</h4>
-
+            <h4 class="card-title fw-semibold mb-0">
+                <i class="bi bi-kanban me-2 text-primary"></i>Projetos
+            </h4>
             <div>
                 <select class="form-select" name="status" id="filtro-status">
                     <option value="">Todos os status</option>
@@ -24,7 +25,7 @@
             </button>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive flex-grow-1">
             <table class="table align-middle text-nowrap mb-0">
 
                 <thead>
@@ -55,36 +56,34 @@
 
                             {% if projeto.status_projeto == "1" %}
                                 <span class="badge bg-warning-subtle text-warning">
-                                <h6>        {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ projeto.get_status_projeto_display }}
                                 </span>
 
                             {% elif projeto.status_projeto == "2" %}
                                 <span class="badge bg-info-subtle text-info">
-                                   <h6> {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ projeto.get_status_projeto_display }}
                                 </span>
 
                             {% elif projeto.status_projeto == "3" %}
                                 <span class="badge bg-primary-subtle text-primary">
-                                  <h6> {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ projeto.get_status_projeto_display }}
                                 </span>
 
                             {% elif projeto.status_projeto == "4" %}
                                 <span class="badge bg-success-subtle text-success">
-                                  <h6> {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ projeto.get_status_projeto_display }}
                                 </span>
 
                             {% elif projeto.status_projeto == "5" %}
                                 <span class="badge bg-danger-subtle text-danger">
-                                  <h6>  {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ projeto.get_status_projeto_display }}
                                 </span>
-
 
                             {% else %}
                                 <span class="badge bg-secondary-subtle text-secondary">
                                     Não informado
                                 </span>
                             {% endif %}
-                          
 
                         </td>
 
@@ -93,7 +92,7 @@
                     {% empty %}
 
                     <tr>
-                        <td colspan="3" class="text-center py-4">
+                        <td colspan="2" class="text-center py-4">
                             Nenhum projeto cadastrado.
                         </td>
                     </tr>
@@ -125,7 +124,7 @@
     </div>
 
     <!-- Lado direito -->
-    <div class="col-lg-4">
+    <div class="col-lg-4 d-flex flex-column">
 
         <!-- Resumo -->
         <div class="card mb-4">
@@ -164,14 +163,14 @@
         </div>
 
         <!-- Pizza -->
-        <div class="card">
+        <div class="card flex-grow-1">
             <div class="card-body">
 
                 <h5 class="card-title fw-semibold">
                     Situação dos Projetos
                 </h5>
 
-                <div id="breakup"></div>
+                <div id="breakup-projetos"></div>
 
             </div>
         </div>
@@ -180,79 +179,24 @@
 
 </div>
 
-<div class="card overflow-hidden">
-    <div class="card-body p-4">
-
-        <h5 class="card-title fw-semibold">
-            Situação das Tarefas
-        </h5>
-
-        <div class="row align-items-center">
-
-            <div class="col-6">
-
-                <h2 class="fw-bold">
-                    {{ projetos|length }}
-                </h2>
-
-                <p class="text-muted">
-                    Total de projetos
-                </p>
-
-                <div class="mt-4">
-
-                    <div class="mb-2">
-                        <span class="round-8 bg-warning rounded-circle me-2 d-inline-block"></span>
-                        Em negociação
-                    </div>
-
-                    <div class="mb-2">
-                        <span class="round-8 bg-info rounded-circle me-2 d-inline-block"></span>
-                        Aguardando iniciar
-                    </div>
-
-                    <div class="mb-2">
-                        <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                        Em execução
-                    </div>
-
-                    <div class="mb-2">
-                        <span class="round-8 bg-success rounded-circle me-2 d-inline-block"></span>
-                        Concluído
-                    </div>
-
-                    <div>
-                        <span class="round-8 bg-danger rounded-circle me-2 d-inline-block"></span>
-                        Bloqueado
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-6">
-                <div id="breakup"></div>
-            </div>
-
-        </div>
-
-    </div>
-</div>
+<br clear="all">
 
 
-<div class="row">
+<div class="row align-items-stretch">
     <!-- Tabela -->
-    <div class="col-lg-8">
-        <div class="card w-100">
-            <div class="card-body">
+    <div class="col-lg-8 d-flex">
+        <div class="card w-100 h-100">
+            <div class="card-body d-flex flex-column">
 
          <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
-            <h4 class="card-title fw-semibold mb-0">Tarefas</h4>
+           <h4 class="card-title fw-semibold mb-0">
+                <i class="bi bi-list-task me-2 text-primary"></i>Tarefas
+            </h4>
 
             <div>
                 <select class="form-select" name="status" id="filtro-status">
                     <option value="">Todos os status</option>
-                    {% for valor, label in status_tarefas %}
+                    {% for valor, label in status_tarefa %}
                         <option value="{{ valor }}">{{ label }}</option>
                     {% endfor %}
                 </select>
@@ -263,7 +207,7 @@
             </button>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive flex-grow-1">
             <table class="table align-middle text-nowrap mb-0">
 
                 <thead>
@@ -284,7 +228,7 @@
                                <a href="#"> {{ tarefa.titulo }} </a>
                                  <a href="#"
                             class="btn btn-light btn-sm rounded-circle"
-                            title="Abrir projeto">
+                            title="Abrir tarefa">
                                 <i class="ti ti-arrow-right"></i>
                             </a>
                             </h6>
@@ -294,36 +238,34 @@
 
                             {% if tarefa.status_tarefa == "1" %}
                                 <span class="badge bg-warning-subtle text-warning">
-                                <h6>        {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ tarefa.get_status_tarefa_display }}
                                 </span>
 
                             {% elif tarefa.status_tarefa == "2" %}
                                 <span class="badge bg-info-subtle text-info">
-                                   <h6> {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ tarefa.get_status_tarefa_display }}
                                 </span>
 
                             {% elif tarefa.status_tarefa == "3" %}
                                 <span class="badge bg-primary-subtle text-primary">
-                                  <h6> {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ tarefa.get_status_tarefa_display }}
                                 </span>
 
                             {% elif tarefa.status_tarefa == "4" %}
                                 <span class="badge bg-success-subtle text-success">
-                                  <h6> {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ tarefa.get_status_tarefa_display }}
                                 </span>
 
                             {% elif tarefa.status_tarefa == "5" %}
                                 <span class="badge bg-danger-subtle text-danger">
-                                  <h6>  {{ projeto.get_status_projeto_display }}</h6>
+                                    {{ tarefa.get_status_tarefa_display }}
                                 </span>
-
 
                             {% else %}
                                 <span class="badge bg-secondary-subtle text-secondary">
                                     Não informado
                                 </span>
                             {% endif %}
-                          
 
                         </td>
 
@@ -332,8 +274,8 @@
                     {% empty %}
 
                     <tr>
-                        <td colspan="3" class="text-center py-4">
-                            Nenhum projeto cadastrado.
+                        <td colspan="2" class="text-center py-4">
+                            Nenhuma tarefa cadastrada.
                         </td>
                     </tr>
 
@@ -364,7 +306,7 @@
     </div>
 
     <!-- Lado direito -->
-    <div class="col-lg-4">
+    <div class="col-lg-4 d-flex flex-column">
 
         <!-- Resumo -->
         <div class="card mb-4">
@@ -375,42 +317,47 @@
                 </h5>
 
                 <div class="d-flex justify-content-between py-2">
-                    <span>Em negociação</span>
-                    <strong>{{ negociacao }}</strong>
+                    <span>Total de tarefas</span>
+                    <strong>{{ total_tarefas }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Em planejamento</span>
+                    <strong>{{ tarefa_planejamento }}</strong>
                 </div>
 
                 <div class="d-flex justify-content-between py-2">
                     <span>Aguardando iniciar</span>
-                    <strong>{{ aguardando }}</strong>
+                    <strong>{{ tarefa_aguardando }}</strong>
                 </div>
 
                 <div class="d-flex justify-content-between py-2">
                     <span>Em execução</span>
-                    <strong>{{ execucao }}</strong>
+                    <strong>{{ tarefa_execucao }}</strong>
                 </div>
 
                 <div class="d-flex justify-content-between py-2">
-                    <span>Concluídos</span>
-                    <strong>{{ concluido }}</strong>
+                    <span>Concluídas</span>
+                    <strong>{{ tarefa_concluido }}</strong>
                 </div>
 
                 <div class="d-flex justify-content-between py-2">
-                    <span>Bloqueados</span>
-                    <strong>{{ bloqueado }}</strong>
+                    <span>Bloqueadas</span>
+                    <strong>{{ tarefa_bloqueado }}</strong>
                 </div>
 
             </div>
         </div>
 
         <!-- Pizza -->
-        <div class="card">
+        <div class="card flex-grow-1">
             <div class="card-body">
 
                 <h5 class="card-title fw-semibold">
                     Situação das Tarefas
                 </h5>
 
-                <div id="breakup"></div>
+                <div id="breakup-tarefas"></div>
 
             </div>
         </div>
@@ -418,4 +365,225 @@
     </div>
 
 </div>
+
+<br clear="all">
+
+
+<div class="row align-items-stretch">
+    <!-- Tabela -->
+    <div class="col-lg-8 d-flex">
+        <div class="card w-100 h-100">
+            <div class="card-body d-flex flex-column">
+
+         <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
+           <h4 class="card-title fw-semibold mb-0">
+                <i class="bi bi-people-fill me-2 text-primary"></i>Times
+            </h4>
+
+            <button type="button" class="btn btn-primary btn-sm">
+                <i class="ti ti-plus"></i> Novo
+            </button>
+        </div>
+
+        <div class="table-responsive flex-grow-1">
+            <table class="table align-middle text-nowrap mb-0">
+
+                <thead>
+                    <tr class="text-muted fw-semibold">
+                        <th>Usuário</th>
+                        <th>Projetos</th>
+                        <th>Tarefas</th>
+                    </tr>
+                </thead>
+
+                <tbody class="border-top">
+
+                    {% for usuario in usuarios %}
+
+                    <tr>
+                        <td>
+                            <h6 class="fw-semibold mb-0">
+                                <a href="#">{{ usuario.get_full_name|default:usuario.username }}</a>
+                                <a href="#" class="btn btn-light btn-sm rounded-circle" title="Ver usuário">
+                                    <i class="ti ti-arrow-right"></i>
+                                </a>
+                            </h6>
+                        </td>
+
+                        <td>
+                            {% if usuario.total_projetos > 0 %}
+                                <span class="badge bg-primary-subtle text-primary">
+                                    {{ usuario.total_projetos }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary-subtle text-secondary">0</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if usuario.total_tarefas > 0 %}
+                                <span class="badge bg-info-subtle text-info">
+                                    {{ usuario.total_tarefas }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary-subtle text-secondary">0</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="3" class="text-center py-4">
+                            Nenhum usuário cadastrado.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+            <br />
+
+            <nav aria-label="...">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0)">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0)">3</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Lado direito -->
+    <div class="col-lg-4 d-flex flex-column">
+
+        <!-- Resumo -->
+        <div class="card mb-4">
+            <div class="card-body">
+
+                <h5 class="card-title fw-semibold mb-4">
+                    Resumo dos Times
+                </h5>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Total de usuários</span>
+                    <strong>{{ total_usuarios }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Usuários ativos</span>
+                    <strong>{{ usuarios_ativos }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Com projetos atribuídos</span>
+                    <strong>{{ usuarios_com_projetos }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Sem projetos</span>
+                    <strong>{{ usuarios_sem_projetos }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Com tarefas atribuídas</span>
+                    <strong>{{ usuarios_com_tarefas }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Sem tarefas</span>
+                    <strong>{{ usuarios_sem_tarefas }}</strong>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Média de projetos/usuário</span>
+                    <strong>{{ media_projetos_usuario }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between py-2">
+                    <span>Média de tarefas/usuário</span>
+                    <strong>{{ media_tarefas_usuario }}</strong>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Pizza -->
+        <div class="card flex-grow-1">
+            <div class="card-body">
+
+                <h5 class="card-title fw-semibold">
+                    Distribuição de Carga
+                </h5>
+
+                <div id="breakup-times"></div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ---- Gráfico: Situação dos Projetos ----
+    var optionsProjetos = {
+        chart: { type: 'donut', height: 280 },
+        series: [
+            {{ negociacao }}, {{ aguardando }}, {{ execucao }}, {{ concluido }}, {{ bloqueado }}
+        ],
+        labels: ['Em negociação', 'Aguardando', 'Em execução', 'Concluído', 'Bloqueado'],
+        colors: ['#FFAE1F', '#539BFF', '#5D87FF', '#13DEB9', '#FA896B'],
+        legend: { position: 'bottom' },
+        dataLabels: { enabled: true }
+    };
+    new ApexCharts(document.querySelector("#breakup-projetos"), optionsProjetos).render();
+
+    // ---- Gráfico: Situação das Tarefas ----
+    var optionsTarefas = {
+        chart: { type: 'donut', height: 280 },
+        series: [
+            {{ tarefa_planejamento }}, {{ tarefa_aguardando }}, {{ tarefa_execucao }}, {{ tarefa_concluido }}, {{ tarefa_bloqueado }}
+        ],
+        labels: ['Planejamento', 'Aguardando', 'Em execução', 'Concluído', 'Bloqueado'],
+        colors: ['#FFAE1F', '#539BFF', '#5D87FF', '#13DEB9', '#FA896B'],
+        legend: { position: 'bottom' },
+        dataLabels: { enabled: true }
+    };
+    new ApexCharts(document.querySelector("#breakup-tarefas"), optionsTarefas).render();
+
+    // ---- Gráfico: Distribuição de Carga (Times) ----
+    var optionsTimes = {
+        chart: { type: 'donut', height: 280 },
+        series: [
+            {{ usuarios_com_projetos }}, {{ usuarios_sem_projetos }},
+            {{ usuarios_com_tarefas }}, {{ usuarios_sem_tarefas }}
+        ],
+        labels: ['Com projetos', 'Sem projetos', 'Com tarefas', 'Sem tarefas'],
+        colors: ['#5D87FF', '#E5EAEF', '#13DEB9', '#F5F5F5'],
+        legend: { position: 'bottom' },
+        dataLabels: { enabled: true }
+    };
+    new ApexCharts(document.querySelector("#breakup-times"), optionsTimes).render();
+
+});
+</script>
+
 {% endblock %}
